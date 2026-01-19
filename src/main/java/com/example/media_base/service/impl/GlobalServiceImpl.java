@@ -2,7 +2,12 @@ package com.example.media_base.service.impl;
 
 import com.example.media_base.mapper.MediaMapper;
 import com.example.media_base.mapper.PersonMapper;
+import com.example.media_base.pojo.Media;
+import com.example.media_base.pojo.PageBean;
 import com.example.media_base.service.GlobalService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +26,7 @@ public class GlobalServiceImpl implements GlobalService {
     private PersonMapper personMapper;
 
     @Override
-    public List<Object> search(List<String> types, String keyword) {
+    public PageBean<Object> search(Integer pageNum, Integer pageSize, List<String> types, String keyword) {
         List<Object> result = new ArrayList<>();
         boolean personSelected = types.contains("person");
         List<String> mediaTypes = new ArrayList<>();
@@ -40,6 +45,19 @@ public class GlobalServiceImpl implements GlobalService {
                 result.addAll(personMapper.search(keyword));
             }
         }
-        return result;
+        PageBean<Object> pb = new PageBean<>();
+        pb.setTotal((long) result.size());
+        pb.setItems(getPage(result, pageNum, pageSize));
+        return pb;
+    }
+
+    private <T> List<T> getPage(List<T> list, Integer pageNum, Integer pageSize) {
+        int len = list.size();
+        int nPage = len / pageSize;
+        if (pageSize * nPage < len) nPage++;
+        pageNum = Math.min(pageNum, nPage);
+        int start = (pageNum - 1) * pageSize;
+        int end = Math.min(pageNum * pageSize, len);
+        return list.subList(start, end);
     }
 }

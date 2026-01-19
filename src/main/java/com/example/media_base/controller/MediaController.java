@@ -1,6 +1,8 @@
 package com.example.media_base.controller;
 
 import com.example.media_base.pojo.Media;
+import com.example.media_base.pojo.PageBean;
+import com.example.media_base.pojo.Result;
 import com.example.media_base.service.GlobalService;
 import com.example.media_base.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,9 @@ public class MediaController {
     private MediaService mediaService;
 
     @GetMapping("list")
-    public List<Media> list() {
-        return mediaService.list();
+    public Result<PageBean<Media>> list(Integer pageNum, Integer pageSize) {
+        PageBean<Media> pb = mediaService.list(pageNum, pageSize);
+        return Result.success(pb);
     }
 
 }

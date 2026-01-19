@@ -2,9 +2,13 @@ package com.example.media_base.service.impl;
 
 import com.example.media_base.mapper.MediaMapper;
 import com.example.media_base.pojo.Media;
+import com.example.media_base.pojo.PageBean;
 import com.example.media_base.service.MediaService;
 
 import java.util.List;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +19,12 @@ public class MediaServiceImpl implements MediaService {
     private MediaMapper mediaMapper;
 
     @Override
-    public List<Media> list() {
-        List<Media> result = mediaMapper.selectAll();
-//        System.out.println(result);
-        for (Media m : result) {
-            System.out.println(m.toMediaString());
-            System.out.println(m);
-        }
-        return mediaMapper.selectAll();
+    public PageBean<Media> list(Integer pageNum, Integer pageSize) {
+        PageBean<Media> pb = new PageBean<>();
+        PageHelper.startPage(pageNum, pageSize);  // enable paging
+        Page<Media> page = (Page<Media>) mediaMapper.selectAll();
+        pb.setTotal(page.getTotal());
+        pb.setItems(page.getResult());
+        return pb;
     }
 }
