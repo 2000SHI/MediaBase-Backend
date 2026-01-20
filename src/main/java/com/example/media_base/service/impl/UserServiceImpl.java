@@ -1,23 +1,41 @@
 package com.example.media_base.service.impl;
 
+import com.example.media_base.config.S3Config;
 import com.example.media_base.mapper.UserMapper;
 import com.example.media_base.pojo.User;
 import com.example.media_base.service.UserService;
+import com.example.media_base.utils.CloudStorageUtil;
 import com.example.media_base.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import javax.naming.directory.InvalidAttributesException;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private S3Client s3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     @Override
     public User findByEmail(String email) {
@@ -56,6 +74,18 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> claims = ThreadLocalUtil.get();
         Integer id = (Integer) claims.get("id");
         userMapper.updateAvatar(id, avatar);
+    }
+
+    @Override
+    public void updateAvatar(MultipartFile multipartFile) {
+        try {
+            String url = CloudStorageUtil.upload(s3Client, bucketName, multipartFile);
+            Map<String, Object> claims = ThreadLocalUtil.get();
+            Integer id = (Integer) claims.get("id");
+            userMapper.updateAvatar(id, url);
+        } catch (IOException e) {
+            throw new RuntimeException("Invalid file");
+        }
     }
 
     @Override

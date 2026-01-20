@@ -34,3 +34,6 @@ build/
 
 ### environment variable ###
 .env
+
+### SpringBoot
+src/main/resources/application.yaml

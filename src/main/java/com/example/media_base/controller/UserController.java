@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,8 +78,14 @@ public class UserController {
         return Result.success();
     }
 
+//    @PatchMapping("updateAvatar")
+//    public Result updateAvatar(@RequestParam @URL String avatar) {
+//        userService.updateAvatar(avatar);
+//        return Result.success();
+//    }
+
     @PatchMapping("updateAvatar")
-    public Result updateAvatar(@RequestParam @URL String avatar) {
+    public Result updateAvatar(MultipartFile avatar) {
         userService.updateAvatar(avatar);
         return Result.success();
     }
