@@ -25,4 +25,11 @@ public class MediaController {
         return Result.success(pb);
     }
 
+    @GetMapping("detail")
+    public Result<Media> find(Integer id) {
+        System.out.println("id:" + id);
+        Media media = mediaService.findById(id);
+        return Result.success(media);
+    }
+
 }

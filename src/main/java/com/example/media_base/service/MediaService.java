@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface MediaService {
     PageBean<Media> list(Integer pageNum, Integer pageSize);
+    Media findById(Integer id);
 }

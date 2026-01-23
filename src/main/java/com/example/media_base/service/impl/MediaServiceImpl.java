@@ -27,4 +27,15 @@ public class MediaServiceImpl implements MediaService {
         pb.setItems(page.getResult());
         return pb;
     }
+
+    @Override
+    public Media findById(Integer id) {
+        Media media = mediaMapper.findById(id);
+        System.out.println(media);
+        Double rate = mediaMapper.getRate(id);
+        media.setRate(rate);
+//        List<String> comments = mediaMapper.getComments(id);
+//        media.setComments(comments);
+        return media;
+    }
 }

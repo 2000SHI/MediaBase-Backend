@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class Media {
@@ -13,6 +14,8 @@ public class Media {
     private String description;
     private LocalDate releaseDate;
     private Instant createTime;
+    private Double rate;
+    private List<String> comments;
 
     public String toMediaString() {
         return "Media{" +

@@ -62,6 +62,30 @@
     </where>
   </select>
 
+  <select id="findById" resultMap="mediaResultMap">
+    SELECT
+    m.id,
+    m.type,
+    m.title,
+    m.description,
+    m.release_date,
+    m.create_time,
+    b.publisher,
+    mo.duration_minutes,
+    mo.rating,
+    mu.album,
+    mu.duration_seconds,
+    tv.seasons
+    FROM media m
+    LEFT JOIN book b ON m.id = b.media_id
+    LEFT JOIN movie mo ON m.id = mo.media_id
+    LEFT JOIN tv tv ON m.id = tv.media_id
+    LEFT JOIN music mu ON m.id = mu.media_id
+    WHERE m.id = #{id}
+  </select>
+
+<!--  <select id="getComments" resultType=""-->
+
   <resultMap id="mediaResultMap" type="Media">
     <!--    <id property="id" column="id"/>-->
     <!--    <result property="title" column="title"/>-->
