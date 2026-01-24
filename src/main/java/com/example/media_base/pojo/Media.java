@@ -15,7 +15,7 @@ public class Media {
     private LocalDate releaseDate;
     private Instant createTime;
     private Double rate;
-    private List<String> comments;
+    private List<Comment> comments;
 
     public String toMediaString() {
         return "Media{" +

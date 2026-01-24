@@ -3,14 +3,9 @@ package com.example.media_base.controller;
 import com.example.media_base.pojo.Media;
 import com.example.media_base.pojo.PageBean;
 import com.example.media_base.pojo.Result;
-import com.example.media_base.service.GlobalService;
 import com.example.media_base.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("media")
@@ -27,9 +22,41 @@ public class MediaController {
 
     @GetMapping("detail")
     public Result<Media> find(Integer id) {
-        System.out.println("id:" + id);
         Media media = mediaService.findById(id);
         return Result.success(media);
+    }
+
+    @PostMapping("rate")
+    public Result addRate(Integer mediaId, Double score) {
+        String error = mediaService.addRate(mediaId, score);
+        if (error != null) {
+            return Result.failure(error);
+        }
+        return Result.success();
+    }
+
+    @PutMapping("rate")
+    public Result updateRate(Integer mediaId, Double score) {
+        String error = mediaService.updateRate(mediaId, score);
+        if (error != null) {
+            return Result.failure(error);
+        }
+        return Result.success();
+    }
+
+    @PostMapping("comment")
+    public Result addComment(Integer mediaId, String comment) {
+        mediaService.addComment(mediaId, comment);
+        return Result.success();
+    }
+
+    @DeleteMapping("comment")
+    public Result addComment(Integer id) {
+        String error = mediaService.deleteComment(id);
+        if (error != null) {
+            return Result.failure(error);
+        }
+        return Result.success();
     }
 
 }

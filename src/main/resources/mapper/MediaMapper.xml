@@ -83,6 +83,12 @@
     LEFT JOIN music mu ON m.id = mu.media_id
     WHERE m.id = #{id}
   </select>
+  
+  <select id="getComments" resultType="Comment">
+    SELECT comment.id, user_id, media_id, user.username, comment FROM comment
+    LEFT JOIN user ON comment.user_id = user.id
+    WHERE media_id = #{id};
+  </select>
 
 <!--  <select id="getComments" resultType=""-->
 
