@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +30,8 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private StringRedisTemplate template;
 
     @PostMapping("/register")
     public Result register(
@@ -56,6 +61,8 @@ public class UserController {
                 claims.put("id", user.getId());
                 claims.put("username", user.getUsername());
                 String token = JwtUtil.genToken(claims);
+                ValueOperations<String, String> operations = template.opsForValue();
+                operations.set(token, token);
                 return Result.success(token);
             }
             else {
@@ -91,7 +98,7 @@ public class UserController {
     }
 
     @PatchMapping("updatePwd")
-    public Result updatePwd(@RequestBody Map<String, String> map) {
+    public Result updatePwd(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String token) {
         String oldPwd = map.get("old_pwd");
         String newPwd = map.get("new_pwd");
         String rePwd = map.get("re_pwd");
@@ -114,6 +121,8 @@ public class UserController {
             return Result.failure("incorrect old password");
         }
         userService.updatePwd(id, newPwd);
+        ValueOperations<String, String> operations = template.opsForValue();
+        operations.getOperations().delete(token);
         return Result.success();
     }
 }

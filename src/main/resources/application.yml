@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: media-base
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/media_base
+    username: root
+    password: MySQLroot
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  profiles:
+    active: dev
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.media_base.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+#jwt:
+#  secret=dev-secret-key: dev-secret
+cloud:
+  aws:
+    s3:
+      bucket: media-base-191022261411
+      region: us-east-1
+      access-key: AKIASY6OQMSRRMKSSUWL
+      secret-key: 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
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 8080
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+server:
+  port: 8081
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+server:
+  port: 8082
