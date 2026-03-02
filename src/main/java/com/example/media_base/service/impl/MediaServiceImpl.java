@@ -6,15 +6,14 @@ import com.example.media_base.pojo.Media;
 import com.example.media_base.pojo.PageBean;
 import com.example.media_base.service.MediaService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import com.example.media_base.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class MediaServiceImpl implements MediaService {
@@ -23,12 +22,25 @@ public class MediaServiceImpl implements MediaService {
     private MediaMapper mediaMapper;
 
     @Override
-    public PageBean<Media> list(Integer pageNum, Integer pageSize) {
+    public PageBean<Media> list(
+            Integer pageNum, Integer pageSize, String types
+    ) {
         PageBean<Media> pb = new PageBean<>();
         PageHelper.startPage(pageNum, pageSize);  // enable paging
-        Page<Media> page = (Page<Media>) mediaMapper.selectAll();
+        Page<Media> page;
+        if (StringUtils.hasLength(types)) {
+            List<String> typeList = new ArrayList<>();
+            if (StringUtils.hasLength(types)) {
+                typeList.addAll(Arrays.asList(types.split(",")));
+            }
+            page = (Page<Media>) mediaMapper.search(typeList, null);
+        }
+        else {
+            page = (Page<Media>) mediaMapper.selectAll();
+        }
         pb.setTotal(page.getTotal());
         pb.setItems(page.getResult());
+//        System.out.println(pb);
         return pb;
     }
 

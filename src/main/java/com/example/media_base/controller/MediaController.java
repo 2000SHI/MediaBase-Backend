@@ -4,8 +4,11 @@ import com.example.media_base.pojo.Media;
 import com.example.media_base.pojo.PageBean;
 import com.example.media_base.pojo.Result;
 import com.example.media_base.service.MediaService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("media")
@@ -15,8 +18,14 @@ public class MediaController {
     private MediaService mediaService;
 
     @GetMapping("list")
-    public Result<PageBean<Media>> list(Integer pageNum, Integer pageSize) {
-        PageBean<Media> pb = mediaService.list(pageNum, pageSize);
+    public Result<PageBean<Media>> list(
+            Integer pageNum,
+            Integer pageSize,
+            @NotNull String types
+        ) {
+        PageBean<Media> pb = mediaService.list(
+                pageNum, pageSize, types
+        );
         return Result.success(pb);
     }
 
