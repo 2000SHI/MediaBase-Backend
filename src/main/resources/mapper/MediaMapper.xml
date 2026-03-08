@@ -90,7 +90,11 @@
     WHERE media_id = #{id};
   </select>
 
-<!--  <select id="getComments" resultType=""-->
+  <select id="getPeople" resultType="MediaPerson">
+    SELECT person_id, person.name, role, character_name FROM media_person
+    LEFT JOIN person on media_person.person_id = person.id
+    WHERE media_person.media_id = #{id};
+  </select>
 
   <resultMap id="mediaResultMap" type="Media">
     <!--    <id property="id" column="id"/>-->

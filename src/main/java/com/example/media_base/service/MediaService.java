@@ -1,7 +1,9 @@
 package com.example.media_base.service;
 
 import com.example.media_base.pojo.Media;
+import com.example.media_base.pojo.MediaPerson;
 import com.example.media_base.pojo.PageBean;
+import com.example.media_base.pojo.Person;
 
 import java.util.List;
 
@@ -14,4 +16,5 @@ public interface MediaService {
     String updateRate(Integer mediaId, Double score);
     void addComment(Integer mediaId, String comment);
     String deleteComment(Integer id);
+    List<MediaPerson> getPeople(Integer id);
 }

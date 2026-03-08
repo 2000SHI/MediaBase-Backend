@@ -1,8 +1,6 @@
 package com.example.media_base.controller;
 
-import com.example.media_base.pojo.Media;
-import com.example.media_base.pojo.PageBean;
-import com.example.media_base.pojo.Result;
+import com.example.media_base.pojo.*;
 import com.example.media_base.service.MediaService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +64,12 @@ public class MediaController {
             return Result.failure(error);
         }
         return Result.success();
+    }
+
+    @GetMapping("people")
+    public Result<List<MediaPerson>> getPeople(@NotNull Integer id) {
+        List<MediaPerson> people = mediaService.getPeople(id);
+        return Result.success(people);
     }
 
 }

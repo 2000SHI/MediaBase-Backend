@@ -2,6 +2,8 @@ package com.example.media_base.mapper;
 
 import com.example.media_base.pojo.Comment;
 import com.example.media_base.pojo.Media;
+import com.example.media_base.pojo.MediaPerson;
+import com.example.media_base.pojo.Person;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,4 +28,5 @@ public interface MediaMapper {
     Comment findComment(Integer id);
     @Delete("delete from comment where id = #{id}")
     void deleteComment(Integer id);
+    List<MediaPerson> getPeople(Integer id);
 }

@@ -1,9 +1,7 @@
 package com.example.media_base.service.impl;
 
 import com.example.media_base.mapper.MediaMapper;
-import com.example.media_base.pojo.Comment;
-import com.example.media_base.pojo.Media;
-import com.example.media_base.pojo.PageBean;
+import com.example.media_base.pojo.*;
 import com.example.media_base.service.MediaService;
 
 import java.util.*;
@@ -90,5 +88,10 @@ public class MediaServiceImpl implements MediaService {
         if (!Objects.equals(comment.getUserId(), userId)) return "cannot delete other user's comment";
         mediaMapper.deleteComment(id);
         return null;
+    }
+
+    @Override
+    public List<MediaPerson> getPeople(Integer id) {
+        return mediaMapper.getPeople(id);
     }
 }
