@@ -90,6 +90,12 @@
     WHERE media_id = #{id};
   </select>
 
+  <select id="getUserComments" resultType="Comment">
+    SELECT comment.id, user_id, media_id, user.username, comment FROM comment
+    LEFT JOIN user ON comment.user_id = user.id
+    WHERE media_id = #{mediaId} and user_id = #{userId};
+  </select>
+
   <select id="getPeople" resultType="MediaPerson">
     SELECT person_id, person.name, role, character_name FROM media_person
     LEFT JOIN person on media_person.person_id = person.id

@@ -14,14 +14,15 @@ public interface MediaMapper {
     List<Media> search(List<String> types, String keyword);
     Media findById(Integer id);
     @Select("select avg(score) from rate where media_id = #{id} group by media_id")
-    Double getRateByMedia(Integer id);
+    Integer getRateByMedia(Integer id);
     @Select("select score from rate where media_id = #{mediaId} and user_id = #{userId}")
-    Double getRateByMediaAndUser(Integer mediaId, Integer userId);
+    Integer getRateByMediaAndUser(Integer mediaId, Integer userId);
     List<Comment> getComments(Integer id);
     @Insert("insert into rate (media_id, user_id, score) values (#{mediaId}, #{userId}, #{score})")
-    void addRate(Integer mediaId, Integer userId, Double score);
+    void addRate(Integer mediaId, Integer userId, Integer score);
     @Update("update rate set score = #{score} where media_id = #{mediaId} and user_id = #{userId}")
-    void updateRate(Integer mediaId, Integer userId, Double score);
+    void updateRate(Integer mediaId, Integer userId, Integer score);
+    List<Comment> getUserComments(Integer mediaId, Integer userId);
     @Insert("insert into comment (media_id, user_id, comment) values (#{mediaId}, #{userId}, #{comment})")
     void addComment(Integer mediaId, Integer userId, String comment);
     @Select("select * from comment where id = #{id}")

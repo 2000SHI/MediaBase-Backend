@@ -45,7 +45,7 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public Media findById(Integer id) {
         Media media = mediaMapper.findById(id);
-        Double rate = mediaMapper.getRateByMedia(id);
+        Integer rate = mediaMapper.getRateByMedia(id);
         media.setRate(rate);
         List<Comment> comments = mediaMapper.getComments(id);
         media.setComments(comments);
@@ -53,23 +53,37 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public String addRate(Integer mediaId, Double score) {
+    public Integer getRate(Integer mediaId) {
         Map<String, Object> claims = ThreadLocalUtil.get();
         Integer userId = (Integer) claims.get("id");
-        Double oldScore = mediaMapper.getRateByMediaAndUser(mediaId, userId);
+        return mediaMapper.getRateByMediaAndUser(mediaId, userId);
+    }
+
+    @Override
+    public String addRate(Integer mediaId, Integer score) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer userId = (Integer) claims.get("id");
+        Integer oldScore = mediaMapper.getRateByMediaAndUser(mediaId, userId);
         if (oldScore != null) return "rate already exist";
         mediaMapper.addRate(mediaId, userId, score);
         return null;
     }
 
     @Override
-    public String updateRate(Integer mediaId, Double score) {
+    public String updateRate(Integer mediaId, Integer score) {
         Map<String, Object> claims = ThreadLocalUtil.get();
         Integer userId = (Integer) claims.get("id");
-        Double oldScore = mediaMapper.getRateByMediaAndUser(mediaId, userId);
+        Integer oldScore = mediaMapper.getRateByMediaAndUser(mediaId, userId);
         if (oldScore == null) return "rate not exist";
         mediaMapper.updateRate(mediaId, userId, score);
         return null;
+    }
+
+    @Override
+    public List<Comment> getUserComments(Integer mediaId) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer userId = (Integer) claims.get("id");
+        return mediaMapper.getUserComments(mediaId, userId);
     }
 
     @Override
