@@ -2,6 +2,7 @@ package com.example.media_base.controller;
 
 import com.example.media_base.pojo.*;
 import com.example.media_base.service.MediaService;
+import com.example.media_base.service.UserService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,9 @@ public class MediaController {
 
     @Autowired
     private MediaService mediaService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("list")
     public Result<PageBean<Media>> list(
@@ -92,4 +96,12 @@ public class MediaController {
         return Result.success(people);
     }
 
+    @PostMapping("/")
+    public Result addMedium() {
+        System.out.println("add medium");
+        if (!userService.isAdmin()) return Result.failure("Permission denied");
+        else {
+            return Result.success();
+        }
+    }
 }

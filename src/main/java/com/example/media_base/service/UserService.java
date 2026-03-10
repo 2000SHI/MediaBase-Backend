@@ -14,4 +14,5 @@ public interface UserService {
     void updateAvatar(String avatar);
     void updateAvatar(MultipartFile multipartFile);
     void updatePwd(Integer id, String password);
+    boolean isAdmin();
 }

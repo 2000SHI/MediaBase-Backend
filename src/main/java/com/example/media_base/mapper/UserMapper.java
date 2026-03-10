@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -34,4 +36,7 @@ public interface UserMapper {
 
     @Update("update user set password = #{password}, update_time = now() where id = #{id}")
     void updatePwd(Integer id, String password);
+
+    @Select("select user_id from role where user_id = #{id} and role = 'ADMIN'")
+    List<Integer> getAdminRole(Integer id);
 }

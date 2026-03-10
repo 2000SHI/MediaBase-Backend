@@ -18,6 +18,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import javax.naming.directory.InvalidAttributesException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -92,5 +93,13 @@ public class UserServiceImpl implements UserService {
     public void updatePwd(Integer id, String password) {
         String hashed = passwordEncoder.encode(password);
         userMapper.updatePwd(id, hashed);
+    }
+
+    @Override
+    public boolean isAdmin() {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Integer id = (Integer) claims.get("id");
+        List<Integer> adminIds = userMapper.getAdminRole(id);
+        return !adminIds.isEmpty();
     }
 }

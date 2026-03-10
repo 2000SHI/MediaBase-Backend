@@ -125,4 +125,10 @@ public class UserController {
         operations.getOperations().delete(token);
         return Result.success();
     }
+
+    @GetMapping("admin")
+    public Result<Boolean> isAdmin() {
+        Boolean isAdmin = userService.isAdmin();
+        return Result.success(isAdmin);
+    }
 }
