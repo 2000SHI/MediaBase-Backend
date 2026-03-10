@@ -9,4 +9,5 @@ import java.util.List;
 public interface PersonService {
     Person findById(Integer id);
     List<PersonMedia> getMedia(Integer id);
+    void add(String name, String bio);
 }

@@ -6,6 +6,7 @@ import com.example.media_base.pojo.PersonMedia;
 import com.example.media_base.pojo.PersonRole;
 import com.example.media_base.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -46,5 +47,13 @@ public class PersonServiceImpl implements PersonService {
             mediaList.add(media);
         }
         return mediaList;
+    }
+
+    @Override
+    public void add(String name, String bio) {
+        Person person = new Person();
+        person.setName(name);
+        person.setBio(bio);
+        personMapper.add(person);
     }
 }

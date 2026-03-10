@@ -1,12 +1,15 @@
 package com.example.media_base.service.impl;
 
 import com.example.media_base.mapper.MediaMapper;
+import com.example.media_base.mapper.PersonMapper;
 import com.example.media_base.pojo.*;
 import com.example.media_base.service.MediaService;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import com.example.media_base.utils.ThreadLocalUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class MediaServiceImpl implements MediaService {
 
     @Autowired
     private MediaMapper mediaMapper;
+
+    @Autowired
+    private PersonMapper personMapper;
 
     @Override
     public PageBean<Media> list(
@@ -107,5 +113,124 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public List<MediaPerson> getPeople(Integer id) {
         return mediaMapper.getPeople(id);
+    }
+
+    @Override
+    public String add(JsonNode data) {
+        if (!data.has("type")) {
+            return "field 'type' missing";
+        }
+        Media medium;
+        String type = data.get("type").asText();
+        switch (type) {
+            case "book":
+                medium = new Book();
+                Book bookMedium = (Book) medium;
+                if (!data.has("publisher")) {
+                    return "field 'publisher' missing";
+                }
+                bookMedium.setPublisher(data.get("publisher").asText());
+                break;
+            case "movie":
+                medium = new Movie();
+                Movie movieMedium = (Movie) medium;
+                if (!data.has("durationMinutes")) {
+                    return "field 'durationMinutes' missing";
+                }
+                movieMedium.setDurationMinutes(data.get("durationMinutes").asInt());
+                if (!data.has("rating")) {
+                    return "field 'rating' missing";
+                }
+                String rating = data.get("rating").asText();
+                switch (rating) {
+                    case "Not Rated", "G", "PG", "PG-13", "R", "NC-17":
+                        break;
+                    default:
+                        return "invalid 'rating' field: " + rating;
+                }
+                movieMedium.setRating(rating);
+                break;
+            case "music":
+                medium = new Music();
+                Music musicMedium = (Music) medium;
+                if (!data.has("album")) {
+                    return "field 'album' missing";
+                }
+                musicMedium.setAlbum(data.get("album").asText());
+                if (!data.has("durationSeconds")) {
+                    return "field 'durationSeconds' missing";
+                }
+                musicMedium.setDurationSeconds(data.get("durationSeconds").asInt());
+                break;
+            case "tv":
+                medium = new Tv();
+                Tv tvMedium = (Tv) medium;
+                if (!data.has("seasons")) {
+                    return "field 'seasons' missing";
+                }
+                tvMedium.setSeasons(data.get("seasons").asInt());
+                break;
+            default:
+                return "invalid 'type' value: " + type;
+        }
+        medium.setType(type);
+        if (!data.has("title")) {
+            return "field 'title' missing";
+        }
+        if (data.has("description")) {
+            medium.setDescription(data.get("description").asText());
+        }
+        if (!data.has("releaseDate")) {
+            return "field 'releaseDate' missing";
+        }
+        medium.setTitle(data.get("title").asText());
+        String releaseDateStr = data.get("releaseDate").asText();
+        try {
+            medium.setReleaseDate(LocalDate.parse(releaseDateStr));
+        } catch (Exception e) {
+            return "invalid 'releaseDate' value: " + releaseDateStr;
+        }
+        mediaMapper.add(medium);
+        int mediaId = medium.getId();
+        switch (type) {
+            case "book":
+                mediaMapper.addBook((Book) medium);
+                break;
+            case "movie":
+                mediaMapper.addMovie((Movie) medium);
+                break;
+            case "music":
+                mediaMapper.addMusic((Music) medium);
+                break;
+            case "tv":
+                mediaMapper.addTv((Tv) medium);
+                break;
+        }
+        if (data.has("contributor")) {
+            for (JsonNode personNode : data.get("contributor")) {
+                if (!personNode.has("role")) {
+                    return "field 'role' of contributor missing";
+                }
+                String role = personNode.get("role").asText();
+                String character = null;
+                switch (role) {
+                    case "writer", "director", "composer", "lyricist", "artist":
+                        break;
+                    case "cast":
+                        if (personNode.has("characterName")) {
+                            character = personNode.get("characterName").asText();
+                            break;
+                        }
+                    default:
+                        return "invalid 'role' value:" + role;
+                }
+                if (!personNode.has("id")) {
+                    return "field 'id' of contributor missing";
+                }
+                int personId = personNode.get("id").asInt();
+                mediaMapper.addPerson(personId, mediaId, role, character);
+            }
+        }
+        return null;
     }
 }

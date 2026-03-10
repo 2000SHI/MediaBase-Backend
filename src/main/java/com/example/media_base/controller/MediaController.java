@@ -3,12 +3,14 @@ package com.example.media_base.controller;
 import com.example.media_base.pojo.*;
 import com.example.media_base.service.MediaService;
 import com.example.media_base.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -97,11 +99,13 @@ public class MediaController {
     }
 
     @PostMapping("/")
-    public Result addMedium() {
+    public Result addMedium(@RequestBody JsonNode data) {
         System.out.println("add medium");
         if (!userService.isAdmin()) return Result.failure("Permission denied");
-        else {
-            return Result.success();
+        String error = mediaService.add(data);
+        if (error != null) {
+            return Result.failure(error);
         }
+        return Result.success();
     }
 }
