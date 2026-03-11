@@ -23,6 +23,12 @@ public class PersonController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("list")
+    public Result<List<Person>> list() {
+        List<Person> people = personService.list();
+        return Result.success(people);
+    }
+
     @GetMapping("detail")
     public Result<Person> find(@NotNull Integer id) {
         Person person = personService.findById(id);
@@ -37,7 +43,7 @@ public class PersonController {
 
     @PostMapping()
     public Result add(@NotNull String name, String bio) {
-        System.out.println("add medium");
+        System.out.println("add person");
         if (!userService.isAdmin()) return Result.failure("Permission denied");
         personService.add(name, bio);
         return Result.success();

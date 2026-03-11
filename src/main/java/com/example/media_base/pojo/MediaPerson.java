@@ -7,5 +7,5 @@ public class MediaPerson {
     private Integer personId;
     private String name;
     private String role;
-    private String character;
+    private String characterName;
 }

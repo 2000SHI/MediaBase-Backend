@@ -21,6 +21,11 @@ public class PersonServiceImpl implements PersonService {
     PersonMapper personMapper;
 
     @Override
+    public List<Person> list() {
+        return personMapper.list();
+    }
+
+    @Override
     public Person findById(Integer id) {
         return personMapper.findById(id);
     }

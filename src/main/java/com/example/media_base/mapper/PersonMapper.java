@@ -11,6 +11,8 @@ import java.util.List;
 
 @Mapper
 public interface PersonMapper {
+    @Select("SELECT * FROM person")
+    List<Person> list();
     List<Person> search(String keyword);
     @Select("SELECT * from PERSON WHERE id = #{id}")
     Person findById(Integer id);
