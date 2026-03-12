@@ -214,7 +214,7 @@ public class MediaServiceImpl implements MediaService {
                 String role = personNode.get("role").asText();
                 String character = null;
                 switch (role) {
-                    case "writer", "director", "composer", "lyricist", "artist":
+                    case "author", "director", "writer", "artist", "composer", "lyricist", "creator":
                         break;
                     case "cast":
                         if (personNode.has("characterName")) {
