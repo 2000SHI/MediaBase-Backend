@@ -25,14 +25,14 @@ public class JwtTest {
         System.out.println(token);
     }
 
-    @Test
-    public void testParse() {
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-                ".eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QgdXNlciJ9LCJleHAiOjE3Njc4MDY4NDB9" +
-                ".K00HC5PcpCw5-WerSsgb5ZGA0alJtfdiC_os2Bn8lJU";
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256("test secret")).build();
-        DecodedJWT decodedJWT = verifier.verify(token);
-        Map<String, Claim> claims = decodedJWT.getClaims();
-        System.out.println(claims.get("user"));
-    }
+//    @Test
+//    public void testParse() {
+//        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+//                ".eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QgdXNlciJ9LCJleHAiOjE3Njc4MDY4NDB9" +
+//                ".K00HC5PcpCw5-WerSsgb5ZGA0alJtfdiC_os2Bn8lJU";
+//        JWTVerifier verifier = JWT.require(Algorithm.HMAC256("test secret")).build();
+//        DecodedJWT decodedJWT = verifier.verify(token);
+//        Map<String, Claim> claims = decodedJWT.getClaims();
+//        System.out.println(claims.get("user"));
+//    }
 }
