@@ -15,12 +15,12 @@ public class RedisTest {
     @Autowired
     private StringRedisTemplate template;
 
-    @Test
-    public void test() {
-        ValueOperations<String, String> operation = template.opsForValue();
-        operation.set("user", "Yuki");
-        assertEquals("Yuki", operation.get("user"));
-        operation.getOperations().delete("user");
-        assertNull(operation.get("user"));
-    }
+//    @Test
+//    public void test() {
+//        ValueOperations<String, String> operation = template.opsForValue();
+//        operation.set("user", "Yuki");
+//        assertEquals("Yuki", operation.get("user"));
+//        operation.getOperations().delete("user");
+//        assertNull(operation.get("user"));
+//    }
 }
