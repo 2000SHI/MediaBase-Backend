@@ -29,6 +29,7 @@ public class MediaController {
             Integer pageSize,
             @NotNull String types
         ) {
+        System.out.println("[controller] list");
         PageBean<Media> pb = mediaService.list(
                 pageNum, pageSize, types
         );
@@ -37,20 +38,21 @@ public class MediaController {
 
     @GetMapping("detail")
     public Result<Media> find(@NotNull Integer id) {
+        System.out.println("[controller] detail");
         Media media = mediaService.findById(id);
         return Result.success(media);
     }
 
     @GetMapping("rate")
     public Result<Integer> getRate(@NotNull Integer mediaId) {
-        System.out.println("get rate");
+        System.out.println("[controller] rate");
         Integer rate = mediaService.getRate(mediaId);
         return Result.success(rate);
     }
 
     @PostMapping("rate")
     public Result addRate(@NotNull Integer mediaId, @NotNull @Min(0) @Max(10) Integer score) {
-        System.out.println("add rate");
+        System.out.println("[controller] add rate");
         String error = mediaService.addRate(mediaId, score);
         if (error != null) {
             return Result.failure(error);
@@ -60,7 +62,7 @@ public class MediaController {
 
     @PutMapping("rate")
     public Result updateRate(@NotNull Integer mediaId, @NotNull @Min(0) @Max(10) Integer score) {
-        System.out.println("update rate");
+        System.out.println("[controller] update rate");
         String error = mediaService.updateRate(mediaId, score);
         if (error != null) {
             return Result.failure(error);
@@ -70,21 +72,21 @@ public class MediaController {
 
     @GetMapping("comment")
     public Result<List<Comment>> getComment(@NotNull Integer mediaId) {
-        System.out.println("get comment");
+        System.out.println("[controller] get comment");
         List<Comment> comments = mediaService.getUserComments(mediaId);
         return Result.success(comments);
     }
 
     @PostMapping("comment")
     public Result addComment(@NotNull Integer mediaId, @NotNull String comment) {
-        System.out.println("add comment");
+        System.out.println("[controller] add comment");
         mediaService.addComment(mediaId, comment);
         return Result.success();
     }
 
     @DeleteMapping("comment")
     public Result deleteComment(@NotNull Integer id) {
-        System.out.println("delete comment");
+        System.out.println("[controller] delete comment");
         String error = mediaService.deleteComment(id);
         if (error != null) {
             return Result.failure(error);
@@ -94,13 +96,14 @@ public class MediaController {
 
     @GetMapping("people")
     public Result<List<MediaPerson>> getPeople(@NotNull Integer id) {
+        System.out.println("[controller] get people");
         List<MediaPerson> people = mediaService.getPeople(id);
         return Result.success(people);
     }
 
     @PostMapping("/")
     public Result addMedium(@RequestBody JsonNode data) {
-        System.out.println("add medium");
+        System.out.println("[controller] add medium");
         if (!userService.isAdmin()) return Result.failure("Permission denied");
         String error = mediaService.add(data);
         if (error != null) {

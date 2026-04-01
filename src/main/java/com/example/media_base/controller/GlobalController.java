@@ -23,7 +23,7 @@ public class GlobalController {
             Integer pageNum,
             Integer pageSize,
             @RequestBody Map<String, Object> map) throws InvalidAttributesException {
-//        System.out.println(map);
+        System.out.println("[controller] search");
         List<String> types = null;
         String keyword = null;
         try {

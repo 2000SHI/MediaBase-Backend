@@ -31,19 +31,21 @@ public class PersonController {
 
     @GetMapping("detail")
     public Result<Person> find(@NotNull Integer id) {
+        System.out.println("[controller] find");
         Person person = personService.findById(id);
         return Result.success(person);
     }
 
     @GetMapping("media")
     public Result<List<PersonMedia>> getMedia(@NotNull Integer id) {
+        System.out.println("[controller] get media");
         List<PersonMedia> media = personService.getMedia(id);
         return Result.success(media);
     }
 
     @PostMapping()
     public Result add(@NotNull String name, String bio) {
-        System.out.println("add person");
+        System.out.println("[controller] add person");
         if (!userService.isAdmin()) return Result.failure("Permission denied");
         personService.add(name, bio);
         return Result.success();

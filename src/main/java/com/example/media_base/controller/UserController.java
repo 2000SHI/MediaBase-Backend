@@ -49,6 +49,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Result login(@Email String email, String password) {
+        System.out.println("[controller] login");
         User user = userService.findByEmail(email);
         if (user == null) {
             return Result.failure("User not existing");
@@ -71,6 +72,7 @@ public class UserController {
 
     @GetMapping("/info")
     public Result<User> info() {
+        System.out.println("[controller] info");
         Map<String, Object> claims = ThreadLocalUtil.get();
         Integer id = (Integer) claims.get("id");
         return Result.success(userService.findById(id));
@@ -78,7 +80,7 @@ public class UserController {
 
     @PutMapping("/update")
     public Result update(@RequestBody @Validated User user) {
-        System.out.println(user);
+        System.out.println("[controller] update");
         userService.update(user);
         return Result.success();
     }
@@ -91,12 +93,14 @@ public class UserController {
 
     @PatchMapping("updateAvatar")
     public Result updateAvatar(MultipartFile avatar) {
+        System.out.println("[controller] update avatar");
         userService.updateAvatar(avatar);
         return Result.success();
     }
 
     @PatchMapping("updatePwd")
     public Result updatePwd(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String token) {
+        System.out.println("[controller] update pwd");
         String oldPwd = map.get("old_pwd");
         String newPwd = map.get("new_pwd");
         String rePwd = map.get("re_pwd");
@@ -126,6 +130,7 @@ public class UserController {
 
     @GetMapping("admin")
     public Result<Boolean> isAdmin() {
+        System.out.println("[controller] is admin");
         Boolean isAdmin = userService.isAdmin();
         return Result.success(isAdmin);
     }
