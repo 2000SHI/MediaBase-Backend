@@ -15,10 +15,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .excludePathPatterns("/user/login", "/user/register")
-                .excludePathPatterns("/test")
-                .excludePathPatterns("/media/list", "/media/detail", "/media/people")
-                .excludePathPatterns("/search")
-                .excludePathPatterns("/person/detail", "/person/media");
+                .excludePathPatterns("/api/user/login", "/api/user/register")
+                .excludePathPatterns("/api/test")
+                .excludePathPatterns("/api/media/list", "/api/media/detail", "/api/media/people")
+                .excludePathPatterns("/api/search")
+                .excludePathPatterns("/api/person/detail", "/api/person/media");
     }
 }

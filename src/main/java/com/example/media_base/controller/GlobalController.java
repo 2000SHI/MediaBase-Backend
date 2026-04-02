@@ -18,7 +18,7 @@ public class GlobalController {
     @Autowired
     private GlobalService globalService;
 
-    @PostMapping("search")
+    @PostMapping("api/search")
     public Result<PageBean<Object>> search(
             Integer pageNum,
             Integer pageSize,

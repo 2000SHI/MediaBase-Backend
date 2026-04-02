@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("media")
+@RequestMapping("api/media")
 public class MediaController {
 
     @Autowired
