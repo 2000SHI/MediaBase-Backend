@@ -101,7 +101,7 @@ public class MediaController {
         return Result.success(people);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public Result addMedium(@RequestBody JsonNode data) {
         System.out.println("[controller] add medium");
         if (!userService.isAdmin()) return Result.failure("Permission denied");

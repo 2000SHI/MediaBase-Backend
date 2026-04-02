@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 @Validated
 public class UserController {
 
@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     private StringRedisTemplate template;
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public Result register(
             @Pattern(regexp = "^\\S{1,32}$") String username,
             @Pattern(regexp = "^\\S{6,16}$") String password,
@@ -47,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public Result login(@Email String email, String password) {
         System.out.println("[controller] login");
         User user = userService.findByEmail(email);
@@ -70,7 +70,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/info")
+    @GetMapping("info")
     public Result<User> info() {
         System.out.println("[controller] info");
         Map<String, Object> claims = ThreadLocalUtil.get();
@@ -78,7 +78,7 @@ public class UserController {
         return Result.success(userService.findById(id));
     }
 
-    @PutMapping("/update")
+    @PutMapping("update")
     public Result update(@RequestBody @Validated User user) {
         System.out.println("[controller] update");
         userService.update(user);
