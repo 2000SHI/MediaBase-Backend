@@ -14,7 +14,7 @@ public interface PersonMapper {
     @Select("SELECT * FROM person")
     List<Person> list();
     List<Person> search(String keyword);
-    @Select("SELECT * from PERSON WHERE id = #{id}")
+    @Select("SELECT * from person WHERE id = #{id}")
     Person findById(Integer id);
     List<PersonRole> getMedia(Integer id);
     @Insert("INSERT INTO person (name, bio) VALUES (#{name}, #{bio})")
