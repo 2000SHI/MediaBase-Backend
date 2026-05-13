@@ -52,6 +52,7 @@ public class GlobalServiceImpl implements GlobalService {
     }
 
     private <T> List<T> getPage(List<T> list, Integer pageNum, Integer pageSize) {
+        if (list.isEmpty()) return list;
         int len = list.size();
         int nPage = len / pageSize;
         if (pageSize * nPage < len) nPage++;
